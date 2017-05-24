@@ -1,15 +1,26 @@
-var fs = require('fs');
+var httpCore = require('http');
 
-var filteredList;
-fs.readdir(process.argv[2], function(err, list){
-  if(!err){
-    filteredList = list.filter(function(element){
-      return element.endsWith('.' + process.argv[3]);
-    })
-  }
-  console.log(filteredList.join('\n'));
+httpCore.get(process.argv[2], function(response){
+  response.setEncoding('utf8');
+  response.on('data', function(data){
+    console.log(data);
+  });
+  response.on('error', function(error){
+    console.error(error);
+  });
+}).on('error', console.error);
 
-});
+// var myModule = require('./module.js');
+//
+// myModule(process.argv[2], process.argv[3], function(err, fileList){
+//   if(err){
+//     console.error('An error occurred: ' + err);
+//     process.exit(1);
+//   }
+//   else{
+//     console.log(fileList.join('\n'));
+//   }
+// });
 
 // fs.readFile(process.argv[2], 'utf8', function(err, data){
 //   if(!err){
